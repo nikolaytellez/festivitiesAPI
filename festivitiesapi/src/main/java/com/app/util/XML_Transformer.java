@@ -8,8 +8,6 @@ import java.io.IOException;
 import org.json.JSONObject;
 import org.json.XML;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 
 public class XML_Transformer {
 	
