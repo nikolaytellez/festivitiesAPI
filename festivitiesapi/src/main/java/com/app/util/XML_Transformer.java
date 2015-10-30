@@ -13,11 +13,6 @@ import com.mongodb.util.JSON;
 
 public class XML_Transformer {
 	
-	public static void main(String[] args) {
-		XML_Transformer xml = new XML_Transformer();
-		xml.processXML("src/resources/festivities.xml");
-	}
-	
 	public JSONObject processXML(String path){
 		JSONObject json =null;
 		try {
