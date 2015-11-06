@@ -11,11 +11,13 @@ import org.json.XML;
 
 public class XML_Transformer {
 	
+	private FileInputStream loadedXML;
+
 	public JSONObject processXML(String path){
 		JSONObject json =null;
 		try {
 			File file = new File(path);
-			FileInputStream loadedXML=new FileInputStream(file);
+			loadedXML = new FileInputStream(file);
 			StringBuilder builder = new StringBuilder();
 			int ch;
 			while((ch = loadedXML.read()) != -1){
@@ -24,7 +26,6 @@ public class XML_Transformer {
 
 			String stringXML = builder.toString();
 			json = XML.toJSONObject(stringXML);
-			System.out.println(json);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

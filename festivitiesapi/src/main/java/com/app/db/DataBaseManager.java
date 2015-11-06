@@ -2,14 +2,14 @@ package com.app.db;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import com.app.model.Festivities;
+import com.app.model.Festivity;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+
 import static com.mongodb.client.model.Filters.eq;
 
 public class DataBaseManager {
@@ -20,13 +20,14 @@ public class DataBaseManager {
 			.getDatabase("festivities");
 	private final MongoCollection<Document> collection = dbFestivities
 			.getCollection("festivitiesColl");
+	
 	//Create the mongo add method
-	public void add(DataBaseManager manager, Festivities festivitie) {
+	public void add(DataBaseManager manager, Festivity festivity) {
 		manager.collection.insertOne(new Document()
-				.append("name", festivitie.getName())
-				.append("startDate", festivitie.getStartDate())
-				.append("endDate", festivitie.getEndDate())
-				.append("place", festivitie.getPlace()));
+				.append("name", festivity.getName())
+				.append("startDate", festivity.getStartDate())
+				.append("endDate", festivity.getEndDate())
+				.append("place", festivity.getPlace()));
 	}
 	//Create the mongo search method
 	public String search(DataBaseManager manager, String key, String value) {
@@ -35,14 +36,19 @@ public class DataBaseManager {
 		List<Document> all = manager.collection.find(filter).into(
 				new ArrayList<Document>());
 		for (Document doc : all) {
-			result = doc.toJson();
+			result+= doc.toJson();
 		}
 		return result;
 	}
 	//Create the update method
-	public void modify(DataBaseManager manager, String id,String value){
-		Bson filter = new Document("$set", new Document("name",value));
+	public void modify(DataBaseManager manager, String id, String key, String value){
+		Bson filter = new Document("$set", new Document(key,value));
 		manager.collection.updateOne(eq("_id", id), filter);
+	}
+	//Create the update method
+	public void delete(DataBaseManager manager, String id){
+		Bson filter = new Document(new Document("_id",id));
+		manager.collection.deleteOne(filter);
 	}
 
 }

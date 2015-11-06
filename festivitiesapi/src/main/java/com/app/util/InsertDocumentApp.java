@@ -1,34 +1,46 @@
 package com.app.util;
 
 
+
+
+import org.bson.Document;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
-import com.mongodb.util.JSON;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 public class InsertDocumentApp {
+	
+	
+	private static MongoClient client;
+
+	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 
 		try {
 
-			Mongo mongo = new Mongo("localhost", 27017);
-			DB db = mongo.getDB("festivities");
+			client = new MongoClient();
+			MongoDatabase dbFestivities = client
+					.getDatabase("festivities");
+			MongoCollection<Document> collection = dbFestivities
+					.getCollection("festivitiesColl");
 
-			DBCollection collection = db.getCollection("festivitiesColl");
+			
 			XML_Transformer xml = new XML_Transformer();
 			JSONObject json = xml.processXML("src/resources/festivities.xml");
 
-			DBObject dbObject = (DBObject)JSON.parse(json.toString());
-			collection.insert(dbObject);
-
-			DBCursor cursorDocJSON = collection.find();
-			while (cursorDocJSON.hasNext()) {
-				System.out.println(cursorDocJSON.next());
+			Document festivitie = new Document();
+			
+			JSONArray array=(JSONArray) ((JSONObject)json.get("festivities")).get("festivity");
+			System.out.println(array);
+			
+			
+			
+			for (int i = 0; i < array.length(); i++) {	
+				collection.insertOne(festivitie.parse(JSONObject.valueToString(array.get(i))));
 			}
 
 		} catch (MongoException e) {

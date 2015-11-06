@@ -1,8 +1,7 @@
 package com.app.model;
 
-import java.util.Date;
 
-public class Festivities {
+public class Festivity {
 	
 	private String id;
 	private String name;
@@ -11,8 +10,7 @@ public class Festivities {
 	private String place;
 	
 	
-	
-	public Festivities(String name, String startDate, String endDate,
+	public Festivity(String name, String startDate, String endDate,
 			String place) {
 		super();
 		this.name = name;
@@ -50,8 +48,6 @@ public class Festivities {
 	public void setPlace(String place) {
 		this.place = place;
 	}
-	
-	
 	
 
 }
